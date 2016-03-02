@@ -112,7 +112,7 @@ public class Users implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userid != null ? userid.hashCode() : 0);
+        hash += (name != null ? name.hashCode() : 0);
         return hash;
     }
 
@@ -123,10 +123,7 @@ public class Users implements Serializable {
             return false;
         }
         Users other = (Users) object;
-        if ((this.userid == null && other.userid != null) || (this.userid != null && !this.userid.equals(other.userid))) {
-            return false;
-        }
-        return true;
+        return this.name.equals(other.name) && other.balance == this.balance;
     }
 
     @Override

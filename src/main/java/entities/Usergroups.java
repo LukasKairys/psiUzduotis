@@ -102,7 +102,7 @@ public class Usergroups implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usergroupid != null ? usergroupid.hashCode() : 0);
+        hash += (name != null ? name.hashCode() : 0);
         return hash;
     }
 
@@ -113,10 +113,7 @@ public class Usergroups implements Serializable {
             return false;
         }
         Usergroups other = (Usergroups) object;
-        if ((this.usergroupid == null && other.usergroupid != null) || (this.usergroupid != null && !this.usergroupid.equals(other.usergroupid))) {
-            return false;
-        }
-        return true;
+        return this.name.equals(other.name);
     }
 
     @Override

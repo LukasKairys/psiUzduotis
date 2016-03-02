@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -114,7 +115,7 @@ public class Transactions implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (transactionid != null ? transactionid.hashCode() : 0);
+        hash += (date != null ? date.hashCode() : 0);
         return hash;
     }
 
@@ -125,10 +126,7 @@ public class Transactions implements Serializable {
             return false;
         }
         Transactions other = (Transactions) object;
-        if ((this.transactionid == null && other.transactionid != null) || (this.transactionid != null && !this.transactionid.equals(other.transactionid))) {
-            return false;
-        }
-        return true;
+        return this.date.equals(other.date) && Objects.equals(this.receiverid, other.receiverid) && this.senderid == other.senderid && this.amountofmoney == other.amountofmoney;
     }
 
     @Override
