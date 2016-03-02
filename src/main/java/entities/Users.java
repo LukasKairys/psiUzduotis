@@ -3,22 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.bank;
+package entities;
 
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -51,8 +50,8 @@ public class Users implements Serializable {
     @NotNull
     @Column(name = "BALANCE")
     private int balance;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
-    private List<Usergroupmappings> usergroupmappingsList;
+    @ManyToMany(mappedBy = "usersList")
+    private List<Usergroups> usergroupsList;
     @JoinColumn(name = "BANKID", referencedColumnName = "BANKID")
     @ManyToOne(optional = false)
     private Banks bankid;
@@ -94,12 +93,12 @@ public class Users implements Serializable {
         this.balance = balance;
     }
 
-    public List<Usergroupmappings> getUsergroupmappingsList() {
-        return usergroupmappingsList;
+    public List<Usergroups> getUsergroupsList() {
+        return usergroupsList;
     }
 
-    public void setUsergroupmappingsList(List<Usergroupmappings> usergroupmappingsList) {
-        this.usergroupmappingsList = usergroupmappingsList;
+    public void setUsergroupsList(List<Usergroups> usergroupsList) {
+        this.usergroupsList = usergroupsList;
     }
 
     public Banks getBankid() {
@@ -113,7 +112,7 @@ public class Users implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (name != null ? name.hashCode() : 0);
+        hash += (userid != null ? userid.hashCode() : 0);
         return hash;
     }
 
@@ -124,12 +123,15 @@ public class Users implements Serializable {
             return false;
         }
         Users other = (Users) object;
-        return this.name.equals(other.name);
+        if ((this.userid == null && other.userid != null) || (this.userid != null && !this.userid.equals(other.userid))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "com.mycompany.bank.Users[ userid=" + userid + " ]";
+        return "entities.Users[ userid=" + userid + " ]";
     }
     
 }

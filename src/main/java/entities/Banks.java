@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.bank;
+package entities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -86,7 +86,7 @@ public class Banks implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (name != null ? name.hashCode() : 0);
+        hash += (bankid != null ? bankid.hashCode() : 0);
         return hash;
     }
 
@@ -97,13 +97,15 @@ public class Banks implements Serializable {
             return false;
         }
         Banks other = (Banks) object;
-        return this.name.equals(other.name);
-
+        if ((this.bankid == null && other.bankid != null) || (this.bankid != null && !this.bankid.equals(other.bankid))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "com.mycompany.bank.Banks[ bankid=" + bankid + " ]";
+        return "entities.Banks[ bankid=" + bankid + " ]";
     }
     
 }
