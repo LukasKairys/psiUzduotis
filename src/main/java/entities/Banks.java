@@ -43,7 +43,7 @@ public class Banks implements Serializable {
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "NAME")
-    private String bankname;
+    private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bankid")
     private List<Users> usersList;
 
@@ -56,7 +56,7 @@ public class Banks implements Serializable {
 
     public Banks(Integer bankid, String name) {
         this.bankid = bankid;
-        this.bankname = name;
+        this.name = name;
     }
 
     public Integer getBankid() {
@@ -68,11 +68,11 @@ public class Banks implements Serializable {
     }
 
     public String getName() {
-        return bankname;
+        return name;
     }
 
     public void setName(String name) {
-        this.bankname = name;
+        this.name = name;
     }
 
     public List<Users> getUsersList() {
@@ -86,7 +86,7 @@ public class Banks implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (bankname != null ? bankname.hashCode() : 0);
+        hash += (name != null ? name.hashCode() : 0);
         return hash;
     }
 
@@ -97,7 +97,7 @@ public class Banks implements Serializable {
             return false;
         }
         Banks other = (Banks) object;
-        return this.bankname.equals(other.bankname);
+        return this.name.equals(other.name);
     }
 
     @Override

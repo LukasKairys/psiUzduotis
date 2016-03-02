@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
     @NamedQuery(name = "Users.findByUserid", query = "SELECT u FROM Users u WHERE u.userid = :userid"),
-    @NamedQuery(name = "Users.findByName", query = "SELECT u FROM Users u WHERE u.name = :name"),
+    @NamedQuery(name = "Users.findByName", query = "SELECT u FROM Users u WHERE u.username = :name"),
     @NamedQuery(name = "Users.findByBalance", query = "SELECT u FROM Users u WHERE u.balance = :balance")})
 public class Users implements Serializable {
 
@@ -45,7 +45,7 @@ public class Users implements Serializable {
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "NAME")
-    private String name;
+    private String username;
     @Basic(optional = false)
     @NotNull
     @Column(name = "BALANCE")
@@ -65,7 +65,7 @@ public class Users implements Serializable {
 
     public Users(Integer userid, String name, int balance) {
         this.userid = userid;
-        this.name = name;
+        this.username = name;
         this.balance = balance;
     }
 
@@ -78,11 +78,11 @@ public class Users implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public int getBalance() {
@@ -112,7 +112,7 @@ public class Users implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (name != null ? name.hashCode() : 0);
+        hash += (username != null ? username.hashCode() : 0);
         return hash;
     }
 
@@ -123,7 +123,7 @@ public class Users implements Serializable {
             return false;
         }
         Users other = (Users) object;
-        return this.name.equals(other.name) && other.balance == this.balance;
+        return this.username.equals(other.username) && other.balance == this.balance;
     }
 
     @Override
