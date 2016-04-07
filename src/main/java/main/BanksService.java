@@ -9,10 +9,14 @@ import entities.Banks;
 import entities.Users;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import static javax.persistence.SynchronizationType.UNSYNCHRONIZED;
 
 /**
@@ -25,17 +29,32 @@ public class BanksService {
     @PersistenceContext
     private EntityManager em;
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Banks AddBank(String name) {
         
         Banks newBank = new Banks();
         
         newBank.setName(name);
         
-        em.persist(newBank);
+        Query query = em.createQuery(
+        "select b from Banks b where b.name = :name" ).setParameter("name", name);
+        if ( ! query.getResultList().isEmpty() ) {
+            return null;
+        }
         
-        em.flush();
+        try {
         
-        return newBank;
+            em.persist(newBank);
+            em.flush();
+            
+            return newBank;
+            
+        } catch (PersistenceException pe) {
+            em.clear();
+        }
+        
+        
+        return null;
     }
     
     public Banks GetBank(int bankId) {

@@ -10,11 +10,15 @@ import entities.Users;
 import java.util.List;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
+import javax.persistence.PersistenceException;
 import static javax.persistence.SynchronizationType.UNSYNCHRONIZED;
 
 /**
@@ -22,25 +26,45 @@ import static javax.persistence.SynchronizationType.UNSYNCHRONIZED;
  * @author lukas
  */
 @Stateless
-
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class UsersService {
+    
     @PersistenceContext 
     private EntityManager em;
     
     public Users UpdateUser(Users user) {
         
-        Users updatedUser = em.merge(user);
+        try {
+            em.refresh(user);
+        } catch (EntityNotFoundException e) {
+            return null; 
+        }
         
-        return updatedUser;
+        try {
+            Users updatedUser = em.merge(user);
+            em.flush();
+
+            return updatedUser;
+        } catch (PersistenceException pe) {
+            em.clear();
+        }
+        
+        return null;
     }
     
     public Users AddUser(Users user) {
         
+        try {
+            em.persist(user);
+            em.flush();
+
+            return user;
+            
+        } catch (PersistenceException pe) {
+            em.clear();
+        }
         
-        em.persist(user);
-        em.flush();
-        
-        return user;
+        return null;
     }
     
     public Users GetUser(int userId) {
